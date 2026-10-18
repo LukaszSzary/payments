@@ -22,11 +22,11 @@ public class OrderListener {
     @KafkaListener(topics = "orders")
     public void onOrderCreated(OrderCreated order){
         if (order.totalAmount().compareTo(new BigDecimal("1000")) > 0){
-            var failed = new PaymentResult(order.orderId(), "failed" ,UUID.randomUUID().toString(), order.totalAmount(), Instant.now());
+            var failed = new PaymentResult(order.orderId(), "failed" ,UUID.randomUUID().toString(),"amount > 1000", Instant.now());
             kafkaTemplate.send("payments", order.orderId(),failed);
             log.info("Payment FAILED for {}", order.orderId());
         }else{
-            var done = new PaymentResult(order.orderId(), "done" ,UUID.randomUUID().toString(), order.totalAmount(), Instant.now());
+            var done = new PaymentResult(order.orderId(), "done" ,UUID.randomUUID().toString(), null, Instant.now());
             kafkaTemplate.send("payments", order.orderId(), done);
             log.info("Payment COMPLETED for {}", order.orderId());
 

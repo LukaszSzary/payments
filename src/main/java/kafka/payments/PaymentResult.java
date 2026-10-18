@@ -7,7 +7,7 @@ public record PaymentResult(
         String orderId,
         String status,
         String paymentId,
-        BigDecimal amount,
+        String reason,
         Instant completedAt
         ) {
 
